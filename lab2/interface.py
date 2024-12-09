@@ -3,13 +3,15 @@ from tkinter import filedialog
 from tkinter import StringVar
 import trains
 
-
+train_frame, staff_frame, composition_frame = trains.build_initial_frames()
 
 def  build_frame():
     
    
-    frames = trains.build_initial_frames()
-    items = frames.display()
+    
+    items = train_frame.display()
+    # items = staff_frame.display()
+    # print(items)
     
     
     if items:
@@ -17,21 +19,23 @@ def  build_frame():
         # message = "Вы можете создать следующие изделия: " + " или ".join(items)
     else:
         message = "Вы не можете создать ни одно изделие."
+    output.delete("1.0", tk.END)
     output.insert(tk.END, message )
 
-def get_requirements():
-    # item_name= var.get()
-    # maker = jewerly.JewelryMaker()
-    # requirements = maker.get_item_requirements(item_name)
-    # output_requirements.delete("1.0", tk.END)
+def add_pers_frame():
+    dol = input_dol.get()
+    name = input_name.get()
+    staj = input_staj.get()
     
-    # if requirements:
-    #     message = f"Для создания {item_name} потребуется:\n"
-    #     message += f"- Время: {requirements['time']} минут\n"
-    #     message += f"- Толстая проволока: {requirements['thick_wire']} сантиметров\n"
-    #     message += f"- Тонкая проволока: {requirements['thin_wire']} сантиметров"
-    # else:
-    #     message = "Изделие не найдено. Пожалуйста, выберите кольцо, подвеску или браслет."
+    staff_frame.add_related_frame(dol, trains.Frame(dol))
+    staff_frame.related_frames[dol].add_attribute("Имя", name)
+    staff_frame.related_frames[dol].add_attribute("Стаж", staj)
+    output.delete("1.0", tk.END)
+    build_frame()
+
+    
+def get_requirements():
+
 
     # Вставляем сообщение в текстовое поле
     output_requirements.insert(tk.END)
@@ -40,52 +44,71 @@ def get_requirements():
 
 win = tk.Tk()   #создаем окно
 
-win.title('Лексический анализатор')
+win.title('Фреймы')
 win.geometry('1075x595+100+100') #?х? - размер окна, +?+? отступ от левой верхней точки
 win.config(bg='#100d23')    #цвет фона
 
+lable_dol = tk.Label(win, text='Введите должность:', 
+                bg='#100d23',
+                fg='#0aefc8',
+                font=('Consolas')
+                ).grid(row=4, column=0)
 
+# input_dol = tk.Entry(win, 
+#                 width=5, 
+#                 font=('Consolas'),
+#                 bg='#161329',
+#                 fg='#0aefc8',)
+# input_dol.grid(row=4, column=1)
 
-lable_time = tk.Label(win, text='Введите время (минуты):', 
+lable_name = tk.Label(win, text='Введите имя:', 
                 bg='#100d23',
                 fg='#0aefc8',
                 font=('Consolas')
                 ).grid(row=0, column=0)
 
-input_time = tk.Entry(win, 
+input_name = tk.Entry(win, 
                 width=5, 
                 font=('Consolas'),
                 bg='#161329',
                 fg='#0aefc8',)
-input_time.grid(row=0, column=1)
+input_name.grid(row=0, column=1)
 
-lable_thick_wire = tk.Label(win, text='Введите длину толстой проволоки (см):', 
+lable_staj = tk.Label(win, text='Введите стаж', 
                 bg='#100d23',
                 fg='#0aefc8',
                 font=('Consolas')
                 ).grid(row=1, column=0)
 
-input_thick_wire = tk.Entry(win, 
+input_staj = tk.Entry(win, 
                 width=5, 
                 font=('Consolas'),
                 bg='#161329',
                 fg='#0aefc8',)
-input_thick_wire.grid(row=1, column=1)
+input_staj.grid(row=1, column=1)
 
-lable_thin_wire = tk.Label(win, text='Введите длину тонкой проволоки (см):', 
-                bg='#100d23',
-                fg='#0aefc8',
-                font=('Consolas')
+btn_add = tk.Button(win, text='добавить фрейм персонала',
+                fg='#100d23',
+                bg='#0aefc8',
+                font=('Consolas'),
+                activebackground='#c592ff',
+                command=add_pers_frame
                 ).grid(row=2, column=0)
 
-input_thin_wire = tk.Entry(win, 
+# lable_thin_wire = tk.Label(win, text='Введите длину тонкой проволоки (см):', 
+#                 bg='#100d23',
+#                 fg='#0aefc8',
+#                 font=('Consolas')
+#                 ).grid(row=2, column=0)
+
+input_dol = tk.Entry(win, 
                 width=5, 
                 font=('Consolas'),
                 bg='#161329',
                 fg='#0aefc8',)
-input_thin_wire.grid(row=2, column=1)
+input_dol.grid(row=2, column=1)
 
-btn_calculate = tk.Button(win, text='построить фреймы',
+btn_build = tk.Button(win, text='построить фреймы',
                 fg='#100d23',
                 bg='#0aefc8',
                 font=('Consolas'),

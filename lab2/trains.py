@@ -3,6 +3,7 @@ class Frame:
         self.name = name
         self.attributes = {}
         self.related_frames = {}
+       
 
     def add_attribute(self, key, value):
         self.attributes[key] = value
@@ -10,19 +11,19 @@ class Frame:
     def add_related_frame(self, key, frame):
         self.related_frames[key] = frame
 
+    
     def display(self):
         output = f"Фрейм: {self.name}\n"
-        print(f"Фрейм: {self.name}")
         output += "Атрибуты:\n"
-        print("Атрибуты:")
         for key, value in self.attributes.items():
             output += f"  - {key}: {value}\n"
-            print(f"  - {key}: {value}")
         for key, frame in self.related_frames.items():
-            output += f"  - Связанный фрейм: {key}\n"
-            print(f"  - Связанный фрейм: {key}")
-            frame.display()
+            output += f"\nСвязанный фрейм: {key}\n"
+            output += f"\n"
+            output += f"\n"
+            output += frame.display()  # Рекурсивный вызов для связанных фреймов
         return output
+            
 
 
 def build_initial_frames():
@@ -66,5 +67,5 @@ def build_initial_frames():
 
     # Отображаем информацию о фрейме поезда
     train_frame.display()
-    return train_frame
+    return train_frame, staff_frame, composition_frame
     
